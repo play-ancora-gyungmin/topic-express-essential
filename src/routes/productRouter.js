@@ -2,7 +2,7 @@ import express from "express";
 
 const productRouter = express.Router();
 
-productRouter.use(authMiddleware);
+// productRouter.use(authMiddleware);
 
 productRouter
   .route("/")
