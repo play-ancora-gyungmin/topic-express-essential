@@ -1,6 +1,14 @@
 import express from "express";
 const app = express();
 
+const errorHandler = (err, req, res, next) => {
+  if (err.status) {
+    res.status(err.status).json({ message: err.message });
+    return;
+  }
+  res.status(500).json({ message: err.message });
+};
+
 // 인증 미들웨어: 토큰 검증 및 사용자 인증 수행
 const authentication = (req, res, next) => {
   // 가상의 인증 로직 수행 (실제로는 데이터베이스 등에서 사용자 검증)
@@ -11,7 +19,9 @@ const authentication = (req, res, next) => {
   const isAuthenticated = true; // 인증 성공 가정
   // TODO: 인증 실패했다면 401 상태코드와 "인증에 실패했습니다." 메시지 응답
   if (!isAuthenticated) {
-    res.status(401).json({ message: "인증에 실패했습니다." });
+    const err = new Error("인증에 실패했습니다.");
+    err.status = 401;
+    throw err;
   }
   // TODO: 인증 성공했다면 req.user 에 사용자 정보
   req.user = userData;
@@ -23,6 +33,8 @@ app.get("/me", authentication, (req, res) => {
   // 인증 미들웨어를 통과했다면 req.user 사용 가능
   res.json(req.user);
 });
+
+app.use(errorHandler);
 
 // 서버 시작
 app.listen(3000, () => {
