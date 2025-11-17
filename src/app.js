@@ -1,24 +1,16 @@
+// 시연용 코드
 import express from "express";
+import productRouter from "./routes/productRouter.js";
+import userRouter from "./routes/userRouter.js";
+import always from "./middlewares/always.js";
 
 const app = express();
 
-app
-  .route("/products")
-  .get((req, res) => {
-    res.json({ message: "Product 목록 보기" });
-  })
-  .post((req, res) => {
-    res.json({ message: "Product 추가하기" });
-  });
+app.use(always);
 
-app
-  .route("/products/:id")
-  .patch((req, res) => {
-    res.json({ message: "Product 수정하기" });
-  })
-  .delete((req, res) => {
-    res.json({ message: "Product 삭제하기" });
-  });
+app.use("/products", productRouter);
+
+app.use("/users", userRouter);
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
