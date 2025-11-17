@@ -25,3 +25,7 @@ Content-Type: application/json
 ### 인증이 필요한 게시글 목록 조회 (토큰 없음)
 GET http://localhost:3000/posts
 Content-Type: application/json
+
+### /me API 테스트
+GET http://localhost:3000/me
+Content-Type: application/json
